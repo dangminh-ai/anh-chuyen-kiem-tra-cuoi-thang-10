@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced English Proficiency Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+  :root {
+    --ink: #16241f;
+    --ink-soft: #4b5b54;
+    --paper: #f4efe4;
+    --paper-card: #fffdf8;
+    --line: #ddd3bd;
+    --pine: #10362b;
+    --pine-light: #1c5240;
+    --gold: #b4863b;
+    --gold-soft: #e8d6ac;
+    --terracotta: #a8492f;
+    --ok: #1c6e4a;
+    --ok-bg: #e4f2ea;
+    --bad: #a8402d;
+    --bad-bg: #fbe9e4;
+    --shadow: 0 10px 30px -14px rgba(16,54,43,0.28);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, 'Times New Roman', serif;
+    line-height: 1.7;
+  }
+  body {
+    background-image:
+      radial-gradient(circle at 12% 8%, rgba(180,134,59,0.08), transparent 40%),
+      radial-gradient(circle at 90% 92%, rgba(16,54,43,0.07), transparent 45%);
+  }
+  body.exam-active { -webkit-user-select: none; user-select: none; }
+  body.exam-active input, body.exam-active textarea, body.exam-active select { user-select: text; -webkit-user-select: text; }
+
+  ::selection { background: var(--gold-soft); }
+
+  /* ---------- Top masthead ---------- */
+  .top-bar {
+    background: linear-gradient(155deg, var(--pine) 0%, #0c2a21 65%, #0a231b 100%);
+    color: #f4efe4;
+    padding: 34px 24px 26px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .top-bar::before {
+    content: "";
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(115deg, rgba(244,239,228,0.035) 0 2px, transparent 2px 26px);
+    pointer-events: none;
+  }
+  .top-bar .eyebrow {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+    margin: 0 0 10px 0;
+    opacity: 0.9;
+  }
+  .top-bar h1 {
+    margin: 0 0 10px 0;
+    font-family: 'Playfair Display', 'Source Serif 4', Georgia, serif;
+    font-weight: 700;
+    font-size: 30px;
+    letter-spacing: 0.3px;
+    position: relative;
+  }
+  .top-bar p {
+    margin: 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 13.5px;
+    letter-spacing: 0.2px;
+    color: #d9e4dc;
+    position: relative;
+  }
+  .top-bar .divider-orn {
+    width: 64px; height: 2px; margin: 16px auto 0 auto;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    position: relative;
+  }
+
+  /* ---------- Status / progress bar ---------- */
+  .status-bar {
+    position: sticky; top: 0; z-index: 30;
+    background: rgba(244,239,228,0.94);
+    backdrop-filter: blur(6px);
+    border-bottom: 1px solid var(--line);
+    padding: 10px 16px;
+  }
+  .status-row {
+    max-width: 920px; margin: 0 auto;
+    display: flex; align-items: center; gap: 12px;
+    flex-wrap: wrap; justify-content: space-between;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+  }
+  .status-chip {
+    font-size: 12.5px;
+    color: var(--pine);
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 6px 13px;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .status-chip.timer { font-weight: 700; color: var(--pine); border-color: var(--gold-soft); background: #fbf4e2; }
+  .status-chip.timer.low { color: #fff; border-color: var(--bad); background: var(--terracotta); animation: pulseLow 1.4s ease-in-out infinite; }
+  @keyframes pulseLow { 0%,100% { opacity: 1; } 50% { opacity: 0.72; } }
+  .status-chip.switches { color: #7a4a2f; }
+  .status-chip.elapsed { color: #3d5a4c; }
+  .nav-links { display: flex; gap: 6px; flex-wrap: wrap; }
+  .nav-links a {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 12.5px; font-weight: 600;
+    text-decoration: none;
+    color: var(--pine);
+    border: 1px solid var(--pine);
+    border-radius: 999px;
+    padding: 5px 12px;
+    transition: all 0.15s ease;
+  }
+  .nav-links a:hover { background: var(--pine); color: #f4efe4; }
+
+  .progress-track {
+    max-width: 920px; margin: 9px auto 0 auto;
+    width: 100%; height: 7px;
+    background: #e3dcc9;
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+  .progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--pine-light)); transition: width 0.4s ease; }
+  .progress-label {
+    max-width: 920px; margin: 5px auto 0 auto;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 11.5px; color: var(--ink-soft); text-align: right;
+  }
+
+  .container { max-width: 920px; margin: 0 auto; padding: 26px 18px 110px 18px; }
+
+  /* ---------- Name box ---------- */
+  .name-box {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-left: 4px solid var(--gold);
+    border-radius: 10px;
+    padding: 18px 20px;
+    margin-bottom: 26px;
+    box-shadow: var(--shadow);
+  }
+  .name-box label {
+    display: block; margin-bottom: 8px; font-weight: 700;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 13px; letter-spacing: 0.3px; color: var(--pine);
+    text-transform: uppercase;
+  }
+  .name-box input {
+    width: 100%; padding: 10px 12px; font-size: 15.5px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    border: 1px solid #c9bfa6; border-radius: 6px; background: #fffefb;
+  }
+  .name-box input:focus { outline: 2px solid var(--gold-soft); border-color: var(--gold); }
+
+  /* ---------- Note / callout ---------- */
+  .note-box {
+    background: #fbf4e2;
+    border: 1px solid var(--gold-soft);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 13px 16px;
+    margin: 6px 0 18px 0;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 13.5px;
+    color: #5c4a24;
+  }
+
+  /* ---------- Part headers ---------- */
+  .part-header {
+    margin: 44px 0 6px 0;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--pine);
+    display: flex; align-items: baseline; gap: 10px;
+  }
+  .part-header h2 {
+    margin: 0; font-size: 21px;
+    font-family: 'Playfair Display', Georgia, serif;
+    color: var(--pine); letter-spacing: 0.2px;
+  }
+  .part-pending {
+    background: #fbf2df; border: 1px dashed var(--gold);
+    border-radius: 8px; padding: 14px 16px; margin: 10px 0;
+    font-family: 'Inter', sans-serif; font-size: 13.5px; color: #6b552b;
+  }
+
+  .sub-header {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-weight: 700; font-size: 14.5px;
+    color: #fffdf8;
+    background: var(--pine-light);
+    display: inline-block;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin: 26px 0 4px 0;
+  }
+  .sub-instructions {
+    font-family: 'Inter', sans-serif;
+    font-style: italic; font-size: 12.5px;
+    color: var(--ink-soft); margin: 6px 0 14px 0;
+  }
+
+  /* ---------- Question cards ---------- */
+  .card {
+    background: var(--paper-card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 0 rgba(16,54,43,0.03);
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+  .card:hover { box-shadow: var(--shadow); border-color: #cbbf9f; }
+  .q-text { font-size: 15.5px; margin-bottom: 10px; }
+  .q-num {
+    font-weight: 700; color: #fff; margin-right: 8px;
+    background: var(--pine); border-radius: 6px;
+    padding: 1px 8px; font-family: 'Inter', sans-serif; font-size: 13px;
+  }
+  .manual-tag {
+    font-family: 'Inter', sans-serif; font-size: 10.5px; font-weight: 700;
+    color: var(--terracotta); background: #fbe9e4;
+    border-radius: 999px; padding: 2px 8px; margin-left: 6px;
+    vertical-align: middle; letter-spacing: 0.3px;
+  }
+
+  .options-grid { display: grid; gap: 8px; margin-top: 8px; }
+  .option-label {
+    display: flex; align-items: center; gap: 9px;
+    font-size: 14.5px; padding: 9px 12px;
+    border: 1px solid #d8cfb6; border-radius: 8px;
+    background: #fffefb; cursor: pointer;
+    transition: all 0.12s ease;
+  }
+  .option-label:hover { border-color: var(--gold); background: #fbf6e9; }
+  .option-label input { accent-color: var(--pine); width: 15px; height: 15px; }
+  .option-label.correct { background: var(--ok-bg); border-color: var(--ok); }
+  .option-label.incorrect { background: var(--bad-bg); border-color: var(--bad); }
+
+  .text-input {
+    width: 100%; padding: 9px 11px; font-size: 14.5px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    border: 1px solid #c9bfa6; border-radius: 6px; background: #fffefb;
+    margin-top: 4px;
+  }
+  .text-input:focus { outline: 2px solid var(--gold-soft); border-color: var(--gold); }
+  .text-input.correct { background: var(--ok-bg); border-color: var(--ok); }
+  .text-input.incorrect { background: var(--bad-bg); border-color: var(--bad); }
+
+  .inline-blank {
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 14.5px;
+    border: none; border-bottom: 2px solid var(--gold);
+    background: #fbf6e9;
+    padding: 2px 6px; margin: 0 2px;
+    min-width: 92px; border-radius: 3px 3px 0 0;
+  }
+  .inline-blank:focus { outline: none; border-bottom-color: var(--pine); background: #fff8e6; }
+  .inline-blank.correct { background: var(--ok-bg); border-bottom-color: var(--ok); }
+  .inline-blank.incorrect { background: var(--bad-bg); border-bottom-color: var(--bad); }
+  select.inline-blank { min-width: 240px; }
+
+  .passage-box {
+    font-size: 15.5px;
+    background: #fffefb;
+    line-height: 1.85;
+  }
+  .passage-box strong { color: var(--pine); }
+
+
+  .essay-area {
+    width: 100%; min-height: 210px; padding: 12px 14px; font-size: 15px;
+    font-family: 'Source Serif 4', Georgia, serif;
+    border: 1px solid #c9bfa6; border-radius: 8px; background: #fffefb;
+    resize: vertical; margin-top: 6px; line-height: 1.75;
+  }
+  .essay-area:focus { outline: 2px solid var(--gold-soft); border-color: var(--gold); }
+  .essay-meta {
+    font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-soft);
+    margin-top: 6px; text-align: right;
+  }
+  .essay-meta.over-under { color: var(--terracotta); font-weight: 600; }
+
+  /* ---------- Score box ---------- */
+  .score-box {
+    display: none; margin-top: 34px;
+    background: linear-gradient(160deg, #10362b, #0c2a21);
+    color: #f4efe4;
+    border-radius: 12px;
+    padding: 22px 24px;
+    box-shadow: var(--shadow);
+  }
+  .score-box p { margin: 6px 0; font-family: 'Inter', sans-serif; font-size: 14px; }
+  .score-box strong { color: var(--gold-soft); font-size: 17px; }
+
+  /* ---------- Footer bar ---------- */
+  .footer-bar {
+    position: fixed; bottom: 0; left: 0; right: 0; z-index: 40;
+    background: rgba(244,239,228,0.96);
+    backdrop-filter: blur(6px);
+    border-top: 1px solid var(--line);
+    padding: 12px 16px;
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .footer-bar button {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-weight: 700; font-size: 13.5px;
+    border-radius: 999px; padding: 11px 22px;
+    border: none; cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.15s ease;
+  }
+  .footer-bar button:active { transform: scale(0.97); }
+  .btn-submit { background: var(--pine); color: #f4efe4; }
+  .btn-submit:hover { background: var(--pine-light); }
+  .btn-submit:disabled { background: #b7c4bd; cursor: not-allowed; }
+  .btn-email { background: var(--gold); color: #2b220f; }
+  .btn-email:hover { filter: brightness(1.05); }
+  .btn-email:disabled { background: #e3d9bd; color: #9c9377; cursor: not-allowed; }
+  .btn-secondary { background: #e5ddc9; color: #4b3f26; }
+  .btn-secondary:hover { background: #d9cfb3; }
+
+  #emailStatus {
+    position: fixed; bottom: 66px; left: 50%; transform: translateX(-50%);
+    z-index: 41; display: none;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    background: #fffefb; border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 16px; box-shadow: var(--shadow);
+  }
+
+  /* ---------- Modals ---------- */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 80;
+    background: rgba(12,26,20,0.55);
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  .modal-box {
+    background: var(--paper-card);
+    border-radius: 12px; max-width: 440px; width: 100%;
+    padding: 26px 26px 22px 26px;
+    box-shadow: 0 24px 60px -18px rgba(0,0,0,0.45);
+    border-top: 4px solid var(--gold);
+  }
+  .modal-box h3 {
+    margin: 0 0 8px 0; font-family: 'Playfair Display', Georgia, serif;
+    color: var(--pine); font-size: 20px;
+  }
+  .modal-box p { font-size: 14px; color: var(--ink-soft); margin: 0 0 14px 0; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; justify-content: flex-end; }
+  .modal-actions button {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13px;
+    border: none; border-radius: 999px; padding: 9px 18px; cursor: pointer;
+  }
+  .modal-list {
+    max-height: 160px; overflow-y: auto; font-family: 'Inter', sans-serif;
+    font-size: 13px; background: #fbf4e2; border-radius: 8px; padding: 10px 12px;
+    border: 1px solid var(--gold-soft); line-height: 1.9;
+  }
+
+  .copy-toast {
+    position: fixed; bottom: 68px; left: 50%; transform: translateX(-50%);
+    background: var(--pine); color: #f4efe4; font-family: 'Inter', sans-serif;
+    font-size: 12.5px; padding: 9px 18px;
+    border-radius: 999px; opacity: 0; pointer-events: none; transition: opacity 0.25s ease;
+    z-index: 60;
+  }
+  .copy-toast.show { opacity: 0.95; }
+
+  /* ---------- Reflection (end-of-test feedback) ---------- */
+  .reflection-card {
+    background: linear-gradient(165deg, #fffdf8 0%, #fbf4e2 100%);
+    border: 1px solid var(--gold-soft);
+    border-top: 4px solid var(--gold);
+  }
+  .reflection-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 18px; color: var(--pine); margin-bottom: 14px;
+  }
+  .reflection-scale {
+    display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 16px 0;
+  }
+  .reflection-option {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 12px 14px; border-radius: 12px;
+    border: 1.5px solid #ddd3bd; background: #fffefb;
+    cursor: pointer; min-width: 84px; text-align: center;
+    transition: all 0.15s ease;
+  }
+  .reflection-option:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .reflection-option input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .reflection-option .reflection-emoji { font-size: 30px; line-height: 1; }
+  .reflection-option .reflection-label {
+    font-family: 'Inter', sans-serif; font-size: 11.5px; color: var(--ink-soft); font-weight: 600;
+  }
+  .reflection-option.selected {
+    border-color: var(--gold); background: #fbf0d6;
+    box-shadow: 0 4px 14px -6px rgba(180,134,59,0.5);
+  }
+  .reflection-option.selected .reflection-label { color: var(--pine); }
+  .reflection-comment { min-height: 110px; }
+
+  @media (max-width: 600px) {
+    .top-bar h1 { font-size: 23px; }
+    .status-row { gap: 8px; }
+    .container { padding: 20px 12px 120px 12px; }
+    .modal-box { padding: 20px 18px; }
+  }
+
+  /* ---------- Audio player (limited plays) ---------- */
+  .audio-card { border-left: 4px solid var(--gold); background: #fbf4e2; }
+  .audio-title { font-family: 'Inter', sans-serif; font-weight: 700; color: var(--pine); font-size: 14px; margin-bottom: 10px; }
+  .audio-row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+  .audio-btn {
+    font-family: 'Inter', sans-serif; font-weight: 700; font-size: 13.5px;
+    background: var(--pine); color: #f4efe4; border: none; border-radius: 999px;
+    padding: 10px 20px; cursor: pointer; min-width: 160px;
+  }
+  .audio-btn:hover:not(:disabled) { background: var(--pine-light); }
+  .audio-btn:disabled { background: #b7c4bd; cursor: not-allowed; }
+  .audio-progress { flex: 1; min-width: 120px; height: 8px; background: #e3dcc9; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+  .audio-progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--gold), var(--pine-light)); }
+  .audio-time { font-family: 'Inter', sans-serif; font-size: 12.5px; color: var(--ink-soft); min-width: 44px; text-align: right; }
+  .audio-plays { font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 600; color: #7a4a2f; margin-top: 10px; }
+  .audio-plays.empty { color: var(--bad); }
+  select.inline-blank { max-width: 100%; }
+
+  .big-banner { margin: 54px 0 0 0; padding: 18px 22px; border-radius: 12px; background: linear-gradient(155deg, var(--pine) 0%, #0c2a21 100%); color: #f4efe4; box-shadow: var(--shadow); border-bottom: 3px solid var(--gold); }
+  .big-banner h2 { margin: 0 0 4px 0; font-family: 'Playfair Display', Georgia, serif; font-size: 22px; color: #f4efe4; }
+  .big-banner p { margin: 0; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--gold-soft); }
+  .big-banner + .part-header { margin-top: 22px; }
+  .name-box.error { border-left-color: var(--terracotta); box-shadow: 0 0 0 2px var(--bad-bg); }
+  .audio-time { min-width: 84px; }
+</style>
+</head>
+
+<body>
+
+<div class="top-bar">
+  <p class="eyebrow">Anh Chuyên &middot; Kiểm tra cuối tháng 10</p>
+  <h1>Advanced English Proficiency Test</h1>
+  <p>Anh Chuyên 1 &middot; Tổng điểm: 110 &middot; Thời gian làm bài: 120 phút</p>
+  <div class="divider-orn"></div>
+</div>
+
+<div class="status-bar">
+  <div class="status-row">
+    <div class="nav-links" id="navLinks"></div>
+    <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <span class="status-chip timer" id="timerChip">120:00</span>
+      <span class="status-chip elapsed" id="elapsedChip">Đã làm: 00:00</span>
+      <span class="status-chip switches" id="switchChip">Rời khỏi trang: 0 lần</span>
+    </div>
+  </div>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 câu đã trả lời</div>
+</div>
+
+<div class="container">
+
+  <div class="name-box">
+    <label for="studentName">Họ và tên học sinh (bắt buộc)</label>
+    <input type="text" id="studentName" class="text-input" placeholder="Nhập họ tên đầy đủ" style="margin-top:0;">
+    <div class="sub-instructions" style="margin:8px 0 0 0;">Bài làm được tự động lưu trên trình duyệt, các em lỡ tay tắt tab sẽ không bị mất đáp án đã nhập nha hihi. Em cần nhập họ tên trước khi nộp. Khi bấm <strong>Nộp bài</strong>, bài làm được nộp và gửi thẳng đến email của giáo viên, không cần bấm thêm nút nào khác nha.</div>
+  </div>
+
+  <div id="examArea"></div>
+
+  <div class="score-box" id="scoreBox"></div>
+
+</div>
+
+<div class="footer-bar">
+  <button class="btn-submit" id="submitBtn">Nộp bài &amp; gửi cho giáo viên</button>
+  <button class="btn-email" id="retryBtn" style="display:none;">Gửi lại bài cho giáo viên</button>
+  <button class="btn-email" id="downloadBtn" style="display:none;">Tải bài làm về máy</button>
+</div>
+<div id="emailStatus"></div>
+
+<div class="modal-overlay" id="confirmOverlay">
+  <div class="modal-box">
+    <h3 id="confirmTitle">Bạn còn câu chưa trả lời</h3>
+    <p id="confirmText">Danh sách các câu chưa trả lời:</p>
+    <div class="modal-list" id="unansweredList"></div>
+    <div class="modal-actions">
+      <button class="btn-secondary" id="backToExam">Quay lại làm bài</button>
+      <button class="btn-submit" id="confirmSubmitAnyway">Vẫn nộp bài</button>
+    </div>
+  </div>
+</div>
+
+<div class="copy-toast" id="copyToast">Chức năng sao chép đã được tắt trong khi làm bài</div>
+
+<script id="examDataJson" type="application/json">{"examTitle": "ADVANCED ENGLISH PROFICIENCY TEST", "timeAllowed": 120, "parts": [{"id": "A", "label": "PART A: LISTENING (17 points)", "pending": false, "banner": "<h2>PHẦN I: ĐỀ THI CHÍNH THỨC (110 điểm)<\/h2><p>Gồm 4 phần A, B, C, D. Các em làm lần lượt từ trên xuống nha.<\/p>", "blocks": [{"type": "note", "html": "🎧 <strong>Lưu ý:<\/strong> Mỗi đoạn ghi âm được phát <strong>tối đa 2 lần<\/strong>. Các em được bấm <strong>tạm dừng<\/strong> và nghe tiếp (không bị trừ lượt), nhưng <strong>không thể tua<\/strong> đoạn ghi âm. Lượt nghe được tính ngay khi em bấm nghe từ đầu. Hãy kiểm tra tai nghe / âm lượng trước khi bắt đầu nha."}, {"type": "subheader", "title": "A.I - Multiple Choice (7 points)", "instructions": "Listen to the recording (Track 1) and choose the best answer (A, B, or C) for each question."}, {"type": "note", "html": "<strong>Lưu ý cho Track 1:<\/strong> Băng có <strong>8 tình huống<\/strong> nhưng đề chỉ có <strong>7 câu<\/strong>. Tình huống thứ 7 trong băng (hai người bàn về một sự kiện thể thao) <strong>không có câu hỏi<\/strong>, các em bỏ qua nha. Tình huống cuối cùng trong băng (bài báo về vật lý) là <strong>Câu 7<\/strong> của đề. Số thứ tự người đọc trong băng có thể lệch với đề, các em cứ làm theo thứ tự câu hỏi bên dưới nha."}, {"type": "audio", "id": "track1", "title": "Audio Track 1 - Multiple Choice (Questions 1-7)", "src": "https://englishpracticetest.net/wp-content/uploads/2022/01/fce-practice-listening-test-33-part-1.mp3", "maxPlays": 2}, {"type": "mc", "num": "1", "text": "<em>You hear two friends talking about a hiking trip.<\/em><br>What does the man feel confident about regarding the climb?", "options": ["Their physical preparation is sufficient for the summit.", "They have bought suitable equipment for the trip.", "The thin air will not slow down their walking pace."], "answer": 1, "auto": true}, {"type": "mc", "num": "2", "text": "<em>You hear two students talking about maintaining traditions.<\/em><br>Which view do both speakers share before reaching their final conclusion?", "options": ["Every ancient custom is irrelevant to modern life.", "Traditions never change as they pass through generations.", "Customs that harm nature or fairness should not be kept."], "answer": 2, "auto": true}, {"type": "mc", "num": "3", "text": "<em>You hear two students talking about a philosophy website.<\/em><br>How has the girl's attitude changed after using it?", "options": ["She is now keen to debate directly with famous scholars online.", "She has developed a more positive view of online discussion forums.", "She realizes her tutor's recommendation was overly optimistic."], "answer": 1, "auto": true}, {"type": "mc", "num": "4", "text": "<em>You hear a man talking to his friend about the cookery school she runs.<\/em><br>Who or what does the woman credit for the success of the technical side of her classes?", "options": ["Her own initial confidence in experimental methods.", "The newly appointed head of training.", "The immediate profits from the catering branch."], "answer": 1, "auto": true}, {"type": "mc", "num": "5", "text": "<em>You hear part of a radio programme about modern zoos.<\/em><br>According to the zookeeper, how do ordinary visitors contribute to animal welfare?", "options": ["By paying for admission when visiting the zoo.", "By campaigning for larger roaming spaces in the wild.", "By volunteering in breeding programs for endangered species."], "answer": 0, "auto": true}, {"type": "mc", "num": "6", "text": "<em>You hear a football coach talking to his team about winning and losing.<\/em><br>What aspect of the team's behavior pleases the coach?", "options": ["The way they hide their disappointment after a defeat.", "The number of victories they have achieved this year.", "Their respectful manner toward opponents when they win."], "answer": 2, "auto": true}, {"type": "mc", "num": "7", "text": "<em>You hear two friends discussing a newspaper article about physics.<\/em><br>What is the man's current attitude toward physics after reading the article?", "options": ["He still does not particularly like the subject itself.", "He now grasps most of the complex physical laws discussed.", "He plans to study the subject further on his own."], "answer": 0, "auto": true}, {"type": "subheader", "title": "A.II - Sentence Completion (10 points)", "instructions": "Listen to Thomas Booth’s talk on restoring old furniture (Track 2) and complete each sentence with ONE word or a short phrase from the recording."}, {"type": "note", "html": "<strong>Lưu ý cho Track 2:<\/strong> Số câu người đọc trong băng có thể khác với số câu trong đề. Các em cứ điền theo thứ tự câu 8 đến 17 bên dưới nha."}, {"type": "audio", "id": "track2", "title": "Audio Track 2 - Thomas Booth on restoring old furniture (Questions 8-17)", "src": "https://englishpracticetest.net/wp-content/uploads/2022/01/fce-practice-listening-test-33-part-2.mp3", "maxPlays": 2}, {"type": "clozePassage", "html": "• On his first project, Thomas found it too demanding to restore an old {{8}} while working his regular job.<br><br>• Apart from deep carvings in the wood, Thomas notes that fixing {{9}} can also take a great deal of time.<br><br>• Checking scraped marks on the wood can help restorers identify the specific {{10}} the furniture came from.<br><br>• Before dismantling a piece of furniture, Thomas advises taking a {{11}} of it from every angle.<br><br>• Beginners who want to research restoration beforehand could borrow a {{12}} from a local library.<br><br>• Certain substances found in {{13}} can damage the skin if protective clothing is not worn.<br><br>• To remove built-up dirt from larger surfaces, Thomas recommends scrubbing them with a {{14}} .<br><br>• If you cannot find a matching replacement part in antique shops, you may have to ask an expert to produce a {{15}} .<br><br>• Thomas warns that rushing the removal of the final coat may force you to do extra {{16}} later on.<br><br>• For the final stage of work, restorers should buy {{17}} to protect their hands from harsh chemicals.", "blanks": [{"num": "8", "kind": "text", "auto": true, "answers": ["four-poster bed", "four poster bed", "a four-poster bed", "four-poster"]}, {"num": "9", "kind": "text", "auto": true, "answers": ["rusty metal legs", "metal legs", "rusty legs"]}, {"num": "10", "kind": "text", "auto": true, "answers": ["workshop"]}, {"num": "11", "kind": "text", "auto": true, "answers": ["photo", "photograph", "picture", "a photo", "a photograph", "a picture"]}, {"num": "12", "kind": "text", "auto": true, "answers": ["DVD", "a DVD"]}, {"num": "13", "kind": "text", "auto": true, "answers": ["wood-strippers", "wood strippers", "wood-stripper", "wood stripper", "chemicals"]}, {"num": "14", "kind": "text", "auto": true, "answers": ["cloth or sponge", "cloth", "sponge", "a cloth", "a sponge", "a cloth or sponge"]}, {"num": "15", "kind": "text", "auto": true, "answers": ["substitute", "a substitute"]}, {"num": "16", "kind": "text", "auto": true, "answers": ["repair work"]}, {"num": "17", "kind": "text", "auto": true, "answers": ["plastic gloves", "gloves"]}]}]}, {"id": "B", "label": "PART B: LEXICO-GRAMMAR (50 points)", "pending": false, "blocks": [{"type": "subheader", "title": "B.I - Lexico-Grammar Multiple Choice (25 points)", "instructions": "Choose the best answer (A, B, C, or D) to complete each sentence (Questions 1 to 25)."}, {"type": "mc", "num": "1", "text": "Of the two architectural proposals submitted for the city library, the committee unanimously preferred ________.", "options": ["the more sustainable", "the most sustainable", "more sustainable one", "most sustainable"], "answer": 0, "auto": true}, {"type": "mc", "num": "2", "text": "The public figure was heavily criticized when she attempted to ________ her inherited wealth across social media platforms.", "options": ["flout", "flaunt", "float", "fleece"], "answer": 1, "auto": true}, {"type": "mc", "num": "3", "text": "His reaction during the heated press conference was ________ defensive; he simply wished to correct factual inaccuracies.", "options": ["more determined than", "determineder than", "so determined as", "determined rather"], "answer": 0, "auto": true}, {"type": "mc", "num": "4", "text": "We must structure our contingency budget ________ that supply chain interruptions will persist well into next year.", "options": ["by the belief", "on the premise", "under the reason", "at the ground"], "answer": 1, "auto": true}, {"type": "mc", "num": "5", "text": "Although Jonathan is four years ________ everyone else in the analytical unit, his recommendations carry significant weight.", "options": ["junior than", "more junior than", "junior to", "junior with"], "answer": 2, "auto": true}, {"type": "mc", "num": "6", "text": "The certification program is divided into five ________ modules, each focusing on a specific computational capability.", "options": ["discreet", "discrete", "indiscreet", "discretionary"], "answer": 1, "auto": true}, {"type": "mc", "num": "7", "text": "The annual electricity consumption of a data facility is substantially higher than ________ a standard office building.", "options": ["that of", "those of", "these of", "which of"], "answer": 0, "auto": true}, {"type": "mc", "num": "8", "text": "The regulatory authority launched an investigation into the firm's ________ expenditure on unnecessary chartered flights.", "options": ["prolific", "profligate", "profound", "primitive"], "answer": 1, "auto": true}, {"type": "mc", "num": "9", "text": "________ was the devastation caused by the flash flood that emergency relief had to be airlifted into the valley.", "options": ["So", "Such", "Much", "How"], "answer": 1, "auto": true}, {"type": "mc", "num": "10", "text": "Prior to listing the historic mansion for public sale, the executor hired an independent evaluator to ________ the estate.", "options": ["apprise", "appraise", "appease", "apply"], "answer": 1, "auto": true}, {"type": "mc", "num": "11", "text": "The new geothermal installation generates roughly ________ energy as the obsolete generator it replaced.", "options": ["three times as much", "three times more", "as three times much", "three times as many"], "answer": 0, "auto": true}, {"type": "mc", "num": "12", "text": "The company director ________ denied the claims that corporate accounts had been falsified to appease shareholders.", "options": ["allegedly", "categorically", "distinctly", "marginally"], "answer": 1, "auto": true}, {"type": "mc", "num": "13", "text": "The more acute the geopolitical tension became, ________ to formulate a durable peace treaty.", "options": ["the envoys worked harder", "harder the envoys worked", "the harder the envoys worked", "the more harder worked the envoys"], "answer": 2, "auto": true}, {"type": "mc", "num": "14", "text": "To ensure a just arbitration, the legal tribunal must consist entirely of ________ observers with no commercial ties.", "options": ["uninterested", "disinterested", "disinteresting", "uninterestedly"], "answer": 1, "auto": true}, {"type": "mc", "num": "15", "text": "Environmental delegates urged that the municipal board ________ immediate restrictions on industrial effluents.", "options": ["imposed", "impose", "must impose", "ought to impose"], "answer": 1, "auto": true}, {"type": "mc", "num": "16", "text": "Commencing clinical trials before verifying baseline chemical toxicity is a textbook case of ________.", "options": ["putting the cart before the horse", "turning on the waterworks", "being at daggers drawn", "getting to the root of the problem"], "answer": 0, "auto": true}, {"type": "mc", "num": "17", "text": "________ a dense fog blanketing the runway, airport traffic control diverted all incoming flights.", "options": ["It being", "There being", "Having been", "There was"], "answer": 1, "auto": true}, {"type": "mc", "num": "18", "text": "Having experienced acute motion sickness in the past, she was distinctly ________ to boarding the small ferry.", "options": ["adverse", "averse", "averted", "adversary"], "answer": 1, "auto": true}, {"type": "mc", "num": "19", "text": "The newly calibrated optical telescope is ________ as susceptible to atmospheric distortion as earlier ground models.", "options": ["far from", "nowhere near", "nothing as", "no longer"], "answer": 1, "auto": true}, {"type": "mc", "num": "20", "text": "Because pristine historical relics are exceptionally scarce, genuine Roman coins ________ at central auctions.", "options": ["command a high price", "demand a high price", "charge a high price", "seize a high price"], "answer": 0, "auto": true}, {"type": "mc", "num": "21", "text": "The third stage of the high-altitude expedition proved ________ than the introductory trek along the base ridge.", "options": ["substantially nerve-rackinger", "far more nerve-racking", "nerve-rackingly more", "much more nerve-rackingly"], "answer": 1, "auto": true}, {"type": "mc", "num": "22", "text": "The advisory committee ________ ten senior researchers representing various branches of atmospheric physics.", "options": ["comprises", "is comprised", "composes", "is composed"], "answer": 0, "auto": true}, {"type": "mc", "num": "23", "text": "The motorist swerved abruptly onto the shoulder; otherwise, he ________ head-on with the runaway freight truck.", "options": ["must have collided", "should have collided", "could have collided", "ought to collide"], "answer": 2, "auto": true}, {"type": "mc", "num": "24", "text": "Management and union representatives have been ________ over overtime compensation throughout the past fortnight.", "options": ["on the house", "at loggerheads", "under their breath", "out of bounds"], "answer": 1, "auto": true}, {"type": "mc", "num": "25", "text": "I suspect someone has neglected to lock the perimeter gate, ________?", "options": ["don't I", "haven't they", "hasn't he", "didn't they"], "answer": 1, "auto": true}, {"type": "subheader", "title": "B.II - Word in Common (5 points)", "instructions": "Find ONE word that has the same spelling and fits all three sentences (Questions 26 to 30)."}, {"type": "text", "num": "26", "text": "&bull; The municipal council resolved to __________ down on unregulated billboard displays across historical streets.<br>&bull; His provocative opening argument did not quite __________ it with the senior editorial panel.<br>&bull; We had to __________ through several layers of bureaucratic delay to secure our scientific excavation permit.", "auto": true, "answers": ["cut"]}, {"type": "text", "num": "27", "text": "&bull; Exceptional handcrafted violins regularly __________ a sizable premium among concert performers.<br>&bull; A seasoned naval officer must know how to __________ the unconditional loyalty of the crew.<br>&bull; The hill fortress was constructed to __________ an unobstructed panorama of the surrounding river delta.", "auto": true, "answers": ["command"]}, {"type": "text", "num": "28", "text": "&bull; You must tug firmly on the right __________ to prevent the workhorse from veering toward the ditch.<br>&bull; The finance minister managed to maintain a tight __________ on regional borrowing throughout the recession.<br>&bull; Innovative research units thrive only when department heads give free __________ to interdisciplinary experimentation.", "auto": true, "answers": ["rein"]}, {"type": "text", "num": "29", "text": "&bull; The deceased industrialist named his eldest daughter as the __________ heir to the shipping conglomerate.<br>&bull; The cobbler carefully stitched a thick rubber __________ onto the leather walking boot.<br>&bull; Freshly pan-fried Atlantic __________ was presented as the featured seafood course of the evening.", "auto": true, "answers": ["sole"]}, {"type": "text", "num": "30", "text": "&bull; Construction workers finally broke __________ on the suburban medical complex early yesterday morning.<br>&bull; The two negotiating teams struggled to find common __________ on agricultural tariffs.<br>&bull; In spite of fierce cross-examination from defense counsel, the eyewitness held her __________ throughout.", "auto": true, "answers": ["ground"]}, {"type": "subheader", "title": "B.III - Phonetics (5 points)", "instructions": "For Questions 31 to 33, choose the word whose underlined part is pronounced differently from that of the others. For Questions 34 and 35, choose the word whose main stress falls on a different syllable from the others."}, {"type": "mc", "num": "31", "text": "Choose the word whose underlined part is pronounced differently from that of the others.", "options": ["d<u>a<\/u>tabase", "c<u>a<\/u>tegory", "f<u>a<\/u>culty", "p<u>a<\/u>llet"], "answer": 0, "auto": true}, {"type": "mc", "num": "32", "text": "Choose the word whose underlined part is pronounced differently from that of the others.", "options": ["pr<u>o<\/u>lific", "c<u>o<\/u>mprise", "c<u>o<\/u>smic", "pr<u>o<\/u>voke"], "answer": 2, "auto": true}, {"type": "mc", "num": "33", "text": "Choose the word whose underlined part is pronounced differently from that of the others.", "options": ["pr<u>e<\/u>mise", "pr<u>e<\/u>cedent", "pr<u>e<\/u>dator", "pr<u>e<\/u>requisite"], "answer": 3, "auto": true}, {"type": "mc", "num": "34", "text": "Choose the word whose main stress is placed differently from that of the others.", "options": ["unscrupulous", "category", "contemporary", "autonomous"], "answer": 1, "auto": true}, {"type": "mc", "num": "35", "text": "Choose the word whose main stress is placed differently from that of the others.", "options": ["polarize", "stimulate", "negotiate", "innovate"], "answer": 2, "auto": true}, {"type": "subheader", "title": "B.IV - Word Formation (10 points)", "instructions": "Questions 36 to 40: Supply the correct form of the word in CAPITAL letters to fill each blank."}, {"type": "text", "num": "36", "text": "Field biologists were impressed by the immense __________ of bird species overwintering along the estuary. <b>(VARY)<\/b>", "auto": true, "answers": ["variety"]}, {"type": "text", "num": "37", "text": "Sudden regulatory shifts can produce serious economic __________ within export-oriented manufacturing. <b>(DISRUPT)<\/b>", "auto": true, "answers": ["disruptions", "disruption"]}, {"type": "text", "num": "38", "text": "The rural development collective has established an environmentally __________ irrigation cooperative. <b>(SUSTAIN)<\/b>", "auto": true, "answers": ["sustainable"]}, {"type": "text", "num": "39", "text": "The gallery took immediate legal action upon discovering that an __________ dealer had forged classical paintings. <b>(SCRUPLE)<\/b>", "auto": true, "answers": ["unscrupulous"]}, {"type": "text", "num": "40", "text": "A persistent public __________ that biotechnology carries unforeseen perils has slowed legislative approval. <b>(PERCEIVE)<\/b>", "auto": true, "answers": ["perception"]}, {"type": "subheader", "title": "Questions 41 to 45", "instructions": "Choose FIVE of the seven words in the box and change their form to fill blanks 41 to 45 in the passage below."}, {"type": "note", "html": "<strong>Word box:<\/strong> INHABIT &nbsp;&bull;&nbsp; COMPREHEND &nbsp;&bull;&nbsp; DISPENSE &nbsp;&bull;&nbsp; RESIST &nbsp;&bull;&nbsp; DOMINATE &nbsp;&bull;&nbsp; STABLE &nbsp;&bull;&nbsp; AVOID"}, {"type": "clozePassage", "html": "For centuries, the rugged alpine valleys of the northern border were deemed largely {{41}} owing to extreme blizzards and steep topography. However, the discovery of mineral springs attracted intrepid settlers who recognized that geothermal heat was an {{42}} asset for permanent survival. Although these infrastructural projects initially encountered fierce {{43}} from conservative regional factions, community standards of living rose rapidly. Today, modern road networks have delivered long-term economic {{44}} to the inhabitants. Nevertheless, municipal ecologists warn that without proactive limits on hotel expansion, ecological deterioration will become virtually {{45}}.", "blanks": [{"num": "41", "kind": "text", "auto": true, "answers": ["uninhabitable"]}, {"num": "42", "kind": "text", "auto": true, "answers": ["indispensable"]}, {"num": "43", "kind": "text", "auto": true, "answers": ["resistance"]}, {"num": "44", "kind": "text", "auto": true, "answers": ["stability"]}, {"num": "45", "kind": "text", "auto": true, "answers": ["unavoidable"]}]}, {"type": "subheader", "title": "B.V - Phrasal Verbs (5 points)", "instructions": "Choose one verb from Column A and one particle from Column B, and put the verb in the correct form to complete each sentence (Questions 46 to 50). Each verb and each particle can be used only once."}, {"type": "note", "html": "<strong>Column A (verbs):<\/strong> CUT &nbsp;&bull;&nbsp; EASE &nbsp;&bull;&nbsp; SET &nbsp;&bull;&nbsp; BRING &nbsp;&bull;&nbsp; LOOK<br><strong>Column B (particles):<\/strong> BACK &nbsp;&bull;&nbsp; OFF &nbsp;&bull;&nbsp; ABOUT &nbsp;&bull;&nbsp; OUT &nbsp;&bull;&nbsp; INTO"}, {"type": "text", "num": "46", "text": "Confronting severe budget shortfalls, the university administration ordered academic chairs to __________ departmental expenditures.", "auto": true, "answers": ["cut back"]}, {"type": "text", "num": "47", "text": "Heavy commuter congestion on the ring road did not begin to __________ until well after nine in the evening.", "auto": true, "answers": ["ease off"]}, {"type": "text", "num": "48", "text": "Upon receiving the philanthropic donation, the conservation foundation immediately __________ renovating the wetland reserve.", "auto": true, "answers": ["set about"]}, {"type": "text", "num": "49", "text": "Patient guidance from veteran instructors consistently __________ the latent artistic talents of young learners.", "auto": true, "answers": ["brings out"]}, {"type": "text", "num": "50", "text": "An appointed judicial committee has resolved to __________ the recurring discrepancies in regional utility tariffs.", "auto": true, "answers": ["look into"]}]}, {"id": "C", "label": "PART C: READING (23 points)", "pending": false, "blocks": [{"type": "subheader", "title": "C.I - Open Cloze (8 points)", "instructions": "Think of the word which best fits each gap (Questions 51 to 58). Use ONLY ONE word for each gap."}, {"type": "clozePassage", "html": "Commercial retail spaces leave virtually nothing to coincidence. Over {{51}} above the attractive packaging and ambient background music, product placement is calculated with rigorous precision. Floor plans are designed in {{52}} a way as to funnel foot traffic past high-margin merchandise, ensuring shoppers browse as many displays as possible. Behavioral research demonstrates that goods positioned {{53}} waist height and eye level consistently attract the highest volume of consumer attention. Consequently, brand manufacturers compete fiercely to ensure their items occupy the {{54}} prominent shelves. The historical era in which patrons stood before a single counter and were served directly by an attendant is {{55}} and truly gone. In contemporary department stores, customers select goods for {{56}}, where eye-catching promotions stimulate impulse transactions as quickly as {{57}}. Modern shoppers must therefore maintain vigilance and take {{58}} of subtle architectural cues to curb unnecessary consumption.", "blanks": [{"num": "51", "kind": "text", "auto": true, "answers": ["and"]}, {"num": "52", "kind": "text", "auto": true, "answers": ["such"]}, {"num": "53", "kind": "text", "auto": true, "answers": ["between"]}, {"num": "54", "kind": "text", "auto": true, "answers": ["most"]}, {"num": "55", "kind": "text", "auto": true, "answers": ["well"]}, {"num": "56", "kind": "text", "auto": true, "answers": ["themselves"]}, {"num": "57", "kind": "text", "auto": true, "answers": ["possible"]}, {"num": "58", "kind": "text", "auto": true, "answers": ["note"]}]}, {"type": "subheader", "title": "C.II - Reading Comprehension (5 points)", "instructions": "Read the passage and choose the correct answer (A, B, C, or D) for each question (Questions 59 to 63)."}, {"type": "passage", "html": "Algorithmic curation has fundamentally altered how citizens consume political information. Rather than presenting users with a representative cross-section of societal debates, algorithmic pipelines are engineered to prioritize engagement metrics, such as click-through rates, comments, and shares. Because emotionally charged content reliably drives user activity, recommendation models tend to amplify partisan perspectives while filtering out nuanced commentary. Over time, consumers find themselves enveloped within digital echo chambers where their preexisting beliefs are continuously validated and opposing viewpoints are either demonized or rendered invisible.<br><br>This personalized curation generates an acute cognitive illusion of intellectual certainty. When individuals are exposed exclusively to corroborating narratives, their critical vigilance deteriorates. Polarized discourse becomes deeply <strong>entrenched<\/strong>, not because users are deliberately hostile to alternative arguments, but because the underlying platforms systematically shelter them from ideological challenge. Public debate ceases to be a collaborative search for policy consensus, degenerating instead into an antagonistic arena of rival indignations.<br><br>Traditional educational paradigms remain ill-equipped to address this information dilemma. Conventional media instruction has historically concentrated on basic functional literacy, teaching students to read printed journalism and verify typographical sources. However, algorithmic platforms demand a sophisticated mastery of digital provenance, algorithmic mechanics, and subtle psychological triggers. Without explicit guidance in evaluating automated content curation, students frequently mistake popularity metrics for factual accuracy.<br><br>In response, international frameworks such as UNESCO's Media and Information Literacy (MIL) initiative emphasize moving beyond passive consumption. MIL instruction equips young learners with the investigative habits necessary to deconstruct digital content, trace corporate ownership, and evaluate algorithmic bias. By cultivating these competencies within the formal curriculum, schools can empower pupils to transcend synthetic echo chambers and participate responsibly in democratic civic discourse."}, {"type": "mc", "num": "59", "text": "What is the primary purpose of the author in the first paragraph?", "options": ["To explain how platform algorithms isolate users from diverse viewpoints", "To propose strict statutory penalties on internet technology firms", "To prove that modern citizens prefer sensationalist reporting", "To outline the technological architecture of computer data networks"], "answer": 0, "auto": true}, {"type": "mc", "num": "60", "text": "The word \"<b>entrenched<\/b>\" in paragraph 2 is closest in meaning to:", "options": ["deep-rooted", "superficial", "fluctuating", "vulnerable"], "answer": 0, "auto": true}, {"type": "mc", "num": "61", "text": "According to paragraph 3, traditional media education fails modern learners because it:", "options": ["overlooks algorithmic distribution mechanisms", "devotes too much time to digital coding skills", "discourages pupils from reading national newspapers", "assumes students cannot master print literacy"], "answer": 0, "auto": true}, {"type": "mc", "num": "62", "text": "Which of the following can be inferred from the passage regarding UNESCO's MIL framework?", "options": ["It advocates for a total ban on social media use in schools", "It prioritizes active verification habits over passive reception", "It aims to replace traditional journalism with student blogs", "It focuses solely on training professional software programmers"], "answer": 1, "auto": true}, {"type": "mc", "num": "63", "text": "Which statement best encapsulates the central message of the passage?", "options": ["Social media networks must immediately cease all computational curation", "Developing critical information literacy is essential to counteract algorithmic polarization", "Adolescents are innately incapable of identifying biased digital journalism", "Democratic debate has been permanently destroyed by modern technology"], "answer": 1, "auto": true}, {"type": "subheader", "title": "C.III - Multiple-choice Cloze (10 points)", "instructions": "Choose the best word (A, B, C, or D) for each gap (Questions 64 to 73)."}, {"type": "clozePassage", "html": "Conserving biodiversity within modern urban sprawls has become an urgent ecological priority. Historical urban development has produced extensive habitat fragmentation, leaving native wildlife {{64}} to maintain viable populations within tiny, disconnected municipal reserves. In response, landscape planners and conservation biologists are establishing linear wildlife corridors to {{65}} separated wetlands with woodland patches. These biological passageways allow pollinators and birds to traverse urban centers, preventing localized populations from becoming severely {{66}} through inbreeding. Research reveals that indigenous flora relies heavily on urban insects to {{67}} blossoms and ensure seasonal regeneration. Nevertheless, municipal administrators often {{68}} the ecological value of these insects, viewing them as secondary concerns compared to residential expansion. To rectify this oversight, community groups are working to foster a strong {{69}} of ecological stewardship among citizens. When local residents actively {{70}} in maintaining native wildflower plots, urban insect density displays an encouraging {{71}}. These grass-roots initiatives prove that cities need not be ecological dead zones; rather, deliberate habitat planning enables wildlife and dense human populations to {{72}} harmoniously in the long {{73}}.", "blanks": [{"num": "64", "kind": "mc", "auto": true, "options": ["struggling", "striving", "flourishing", "triumphing"], "answer": 0}, {"num": "65", "kind": "mc", "auto": true, "options": ["link", "detach", "sever", "isolate"], "answer": 0}, {"num": "66", "kind": "mc", "auto": true, "options": ["depleted", "fortified", "enhanced", "elevated"], "answer": 0}, {"num": "67", "kind": "mc", "auto": true, "options": ["pollinate", "germinate", "eradicate", "terminate"], "answer": 0}, {"num": "68", "kind": "mc", "auto": true, "options": ["underestimate", "overestimate", "scrutinize", "exaggerate"], "answer": 0}, {"num": "69", "kind": "mc", "auto": true, "options": ["sense", "trace", "scent", "sight"], "answer": 0}, {"num": "70", "kind": "mc", "auto": true, "options": ["engage", "conform", "refrain", "abstain"], "answer": 0}, {"num": "71", "kind": "mc", "auto": true, "options": ["rebound", "recession", "downturn", "standstill"], "answer": 0}, {"num": "72", "kind": "mc", "auto": true, "options": ["coexist", "dispute", "conflict", "perish"], "answer": 0}, {"num": "73", "kind": "mc", "auto": true, "options": ["run", "road", "pace", "span"], "answer": 0}]}]}, {"id": "D", "label": "PART D: WRITING (20 points)", "pending": false, "blocks": [{"type": "subheader", "title": "D.I - Sentence Transformation (5 points)", "instructions": "Finish each sentence so that it means exactly the same as the sentence before it, using the word in brackets. Do not change the word given. You must use between THREE and EIGHT words."}, {"type": "text", "num": "74", "text": "The final expenditure on the rail bypass was four times as high as the original municipal estimate. <b>(AMOUNT)<\/b><br>The cost of the rail bypass was four times __________ by the municipal council.", "auto": true, "answers": ["the amount estimated", "the amount that was estimated", "the amount originally estimated", "the amount that was originally estimated", "the amount initially estimated", "the amount that was initially estimated", "the amount first estimated", "the amount previously estimated"]}, {"type": "text", "num": "75", "text": "The candidate decided to abandon the campaign because of acute fatigue, not because he lacked ambition. <b>(MUCH)<\/b><br>The candidate's decision to withdraw reflected __________ acute fatigue.", "auto": true, "answers": ["not so much a lack of ambition as", "not so much an absence of ambition as", "not so much lack of ambition as"]}, {"type": "text", "num": "76", "text": "The radar evasion capabilities of nuclear submarines easily exceed those of surface corvettes. <b>(SUPERIOR)<\/b><br>The radar evasion capabilities of nuclear submarines __________ those of surface corvettes.", "auto": true, "answers": ["are far superior to", "are vastly superior to", "are easily superior to", "are clearly superior to", "are greatly superior to", "are much superior to", "are significantly superior to", "are considerably superior to", "are markedly superior to", "are superior to"]}, {"type": "text", "num": "77", "text": "Arthur is far more articulate than any other debater in our secondary school academy. <b>(BY)<\/b><br>Arthur is __________ debater in our secondary school academy.", "auto": true, "answers": ["by far the most articulate"]}, {"type": "text", "num": "78", "text": "As the legal controversy grew increasingly complex, both corporate syndicates acted with greater caution. <b>(MORE)<\/b><br>The more complex the legal controversy grew, __________ .", "auto": true, "answers": ["the more cautiously both corporate syndicates acted", "the more cautiously both of the corporate syndicates acted", "the more cautiously both the corporate syndicates acted", "the more cautiously the two corporate syndicates acted", "the more carefully both corporate syndicates acted"]}, {"type": "subheader", "title": "D.II - Sentence Rewriting (5 points)", "instructions": "Rewrite each sentence beginning with the given words so that the meaning stays the same (Questions 79 to 83). Complete the new sentence in the box."}, {"type": "text", "num": "79", "text": "The pharmaceutical laboratory would never release an unverified vaccine to the general public under any circumstances.<br>Under no circumstances __________ .", "auto": false, "ref": "would the pharmaceutical laboratory release an unverified vaccine to the general public"}, {"type": "text", "num": "80", "text": "Because there was severe icing along the mountain pass, the transport authorities barred all heavy articulated trucks.<br>There being __________ .", "auto": false, "ref": "severe icing along the mountain pass, the transport authorities barred all heavy articulated trucks"}, {"type": "text", "num": "81", "text": "Although the cross-examination was grueling, the key witness maintained complete composure.<br>Grueling though __________ .", "auto": false, "ref": "the cross-examination was, the key witness maintained complete composure"}, {"type": "text", "num": "82", "text": "The board only endorsed the merger because external auditors guaranteed the firm's financial solvency.<br>If it had not __________ .", "auto": false, "ref": "been for the external auditors' guarantee of the firm's financial solvency, the board would not have endorsed the merger"}, {"type": "text", "num": "83", "text": "The most astonishing aspect of the deep-sea expedition was that the wooden shipwreck remained largely intact.<br>What was __________ .", "auto": false, "ref": "most astonishing about the deep-sea expedition was that the wooden shipwreck remained largely intact"}, {"type": "subheader", "title": "D.III - Essay (10 points)"}, {"type": "note", "html": "<strong>Lưu ý:<\/strong> Em chọn <strong>một trong hai<\/strong>: viết bài essay ở D.III, hoặc làm phần D.III.A ở bên dưới (dành cho em không viết essay) nha."}, {"type": "essay", "num": "essay", "title": "D.III - Essay (10 points)", "minWords": 225, "maxWords": 275, "optional": true, "prompt": "Write an essay of about <strong>250 words<\/strong> (225 to 275 words) on the following topic:<br><br><em>In modern society, celebrities have positive impacts on the young generation. Do you agree or disagree?<\/em><br><br><em>Barem chấm (10 điểm): Task Response &amp; Clarity of Argument (3) · Coherence &amp; Cohesion (2.5) · Lexical Resource (2.5) · Grammatical Range &amp; Accuracy (2).<\/em>"}, {"type": "subheader", "title": "D.III.A - Advanced Sentence Transformation (10 points)", "instructions": "Chỉ làm phần này nếu em không viết essay D.III. Finish each sentence so that it means exactly the same as the sentence before it, using the word in brackets. Do not change the word given. You must use between THREE and EIGHT words."}, {"type": "text", "num": "84", "text": "The witness was more confused than dishonest while responding to the defense attorney. <b>(RATHER)<\/b><br>The witness's responses were __________ calculated dishonesty.", "auto": true, "answers": ["due to confusion rather than", "born of confusion rather than", "the result of confusion rather than", "a result of confusion rather than", "caused by confusion rather than", "prompted by confusion rather than", "the product of confusion rather than", "a product of confusion rather than", "driven by confusion rather than"], "optional": true}, {"type": "text", "num": "85", "text": "The revised draft of the commercial lease is far clearer than the initial proposal. <b>(NEARLY)<\/b><br>The initial proposal of the commercial lease was __________ the revised draft.", "auto": true, "answers": ["not nearly as clear as", "not nearly so clear as"], "optional": true}, {"type": "text", "num": "86", "text": "David is twenty-three years old; his brother Christopher is twenty years old. <b>(OF)<\/b><br>David is __________ two brothers.", "auto": true, "answers": ["the elder of the", "the older of the"], "optional": true}, {"type": "text", "num": "87", "text": "The express delivery service now takes much less time than it once did. <b>(FRACTION)<\/b><br>The express delivery service takes __________ it once did.", "auto": true, "answers": ["only a fraction of the time", "a fraction of the time", "just a fraction of the time", "merely a fraction of the time"], "optional": true}, {"type": "text", "num": "88", "text": "The spokesperson issued an uncompromising statement rejecting all involvement in trade manipulation. <b>(CATEGORICALLY)<\/b><br>The spokesperson __________ any involvement in trade manipulation.", "auto": true, "answers": ["categorically denied", "categorically rejected"], "optional": true}, {"type": "text", "num": "89", "text": "When the supervisor pointed out the accounting discrepancies, the assistant started to cry. <b>(WATERWORKS)<\/b><br>The assistant suddenly __________ when the supervisor noted the discrepancies.", "auto": true, "answers": ["turned on the waterworks"], "optional": true}, {"type": "text", "num": "90", "text": "The lead detective could not explain how the locked safe had been breached without triggering alarms. <b>(LOSS)<\/b><br>The lead detective was __________ how the locked safe had been breached without triggering alarms.", "auto": true, "answers": ["at a complete loss to explain", "at a total loss to explain", "at a loss to explain", "at a complete loss as to", "at a total loss as to", "at a loss as to"], "optional": true}, {"type": "text", "num": "91", "text": "The diplomat contacted the foreign minister directly only because every other channel of negotiation had failed. <b>(RESORT)<\/b><br>The diplomat only contacted the foreign minister directly __________ .", "auto": true, "answers": ["as a last resort", "as a final resort"], "optional": true}, {"type": "text", "num": "92", "text": "The transferred engineer felt completely out of place during his opening week at the corporate headquarters. <b>(FISH)<\/b><br>The transferred engineer felt __________ during his opening week at headquarters.", "auto": true, "answers": ["like a fish out of water"], "optional": true}, {"type": "text", "num": "93", "text": "The community victory in protecting the ancient woodland was an achievement that we will never forget. <b>(BE)<\/b><br>The community victory in protecting the ancient woodland was an achievement __________ .", "auto": true, "answers": ["never to be forgotten", "not to be forgotten", "that will never be forgotten", "which will never be forgotten"], "optional": true}, {"type": "reflection", "num": "reflection", "prompt": "Em đánh giá trải nghiệm học tập trong tháng 10 vừa qua như thế nào?", "commentPlaceholder": "Chia sẻ thêm điều em thích, điều em muốn cải thiện, hoặc bất kỳ điều gì em muốn nhắn gửi tới anh/chị...", "scale": [{"emoji": "😞", "label": "Chưa hài lòng"}, {"emoji": "😐", "label": "Tạm ổn"}, {"emoji": "🙂", "label": "Khá ổn"}, {"emoji": "😄", "label": "Hài lòng"}, {"emoji": "🤩", "label": "Rất hài lòng"}]}]}]}</script>
+<script>
+// ---------- Load data ----------
+const examData = JSON.parse(document.getElementById('examDataJson').textContent);
+// Lấy access key miễn phí tại https://web3forms.com (nhập đúng Gmail nhận bài, key sẽ gửi về hòm thư đó)
+const WEB3FORMS_KEY = "5b975045-2a48-4254-9c45-105514c204cb";
+let lastResultText = "";
+const EXAM_MINUTES = 120;
+const TOTAL_SECONDS = EXAM_MINUTES * 60;
+
+const examArea = document.getElementById('examArea');
+const navLinks = document.getElementById('navLinks');
+
+// registry of all answerable items: {id, kind:'mc'|'text'|'clozeText'|'clozeMc'|'essay', auto, num, partId, answers/answer, options, minWords, maxWords, refLabel}
+const registry = [];
+
+function normalize(str) {
+  return (str || '').toLowerCase().trim().replace(/[-\u2010\u2011\u2013\u2014]/g, ' ').replace(/[.,!?;:'"()\u2018\u2019\u201c\u201d]/g, '').replace(/\s+/g, ' ');
+}
+
+function stripTags(str) {
+  return (str || '').replace(/<[^>]+>/g, '');
+}
+
+function el(tag, className, html) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+
+function renderClozeHtml(html, blanks, letterOnly) {
+  let out = html;
+  blanks.forEach(b => {
+    const token = '{{' + b.num + '}}';
+    let inputHtml = '';
+    if (b.kind === 'text') {
+      inputHtml = '<input type="text" class="inline-blank" id="ans_' + b.num + '" data-num="' + b.num + '" placeholder="(' + b.num + ')" autocomplete="off">';
+    } else {
+      let opts = '<option value="">(' + b.num + ')</option>';
+      b.options.forEach((opt, idx) => {
+        const letter = String.fromCharCode(65 + idx);
+        opts += '<option value="' + idx + '">' + (letterOnly ? letter : letter + '. ' + opt.replace(/"/g, '&quot;')) + '</option>';
+      });
+      inputHtml = '<select class="inline-blank" id="ans_' + b.num + '" data-num="' + b.num + '">' + opts + '</select>';
+    }
+    out = out.split(token).join(inputHtml);
+  });
+  return out;
+}
+
+function buildNavLinks() {
+  examData.parts.forEach(p => {
+    const a = document.createElement('a');
+    a.href = '#part-' + p.id;
+    a.textContent = p.nav || ('Phần ' + p.id);
+    navLinks.appendChild(a);
+  });
+}
+
+function renderExam() {
+  examData.parts.forEach(part => {
+    if (part.banner) examArea.appendChild(el('div', 'big-banner', part.banner));
+    const header = el('div', 'part-header', '<h2 id="part-' + part.id + '">' + part.label + '</h2>');
+    examArea.appendChild(header);
+
+    if (part.pending) {
+      if (part.pendingNote) examArea.appendChild(el('div', 'part-pending', part.pendingNote));
+      return;
+    }
+
+    part.blocks.forEach(block => {
+      if (block.type === 'subheader') {
+        examArea.appendChild(el('div', 'sub-header', block.title));
+        if (block.instructions) examArea.appendChild(el('div', 'sub-instructions', block.instructions));
+      } else if (block.type === 'note') {
+        examArea.appendChild(el('div', 'note-box', block.html));
+      } else if (block.type === 'reflection') {
+        const card = el('div', 'card reflection-card');
+        card.id = 'q_' + part.id + '_' + block.num;
+        let scaleHtml = '<div class="reflection-scale">';
+        block.scale.forEach((s, idx) => {
+          scaleHtml += '<label class="reflection-option"><input type="radio" name="reflectionRating" value="' + idx + '">' +
+            '<span class="reflection-emoji">' + s.emoji + '</span><span class="reflection-label">' + s.label + '</span></label>';
+        });
+        scaleHtml += '</div>';
+        let inner = '<div class="reflection-title">' + block.prompt + '</div>' + scaleHtml;
+        inner += '<textarea class="essay-area reflection-comment" id="reflectionComment" placeholder="' + (block.commentPlaceholder || '').replace(/"/g, '&quot;') + '"></textarea>';
+        card.innerHTML = inner;
+        examArea.appendChild(card);
+        card.querySelectorAll('.reflection-option input').forEach(inp => {
+          inp.addEventListener('change', () => {
+            card.querySelectorAll('.reflection-option').forEach(l => l.classList.remove('selected'));
+            inp.closest('.reflection-option').classList.add('selected');
+          });
+        });
+      } else if (block.type === 'audio') {
+        examArea.appendChild(buildAudioPlayer(block));
+      } else if (block.type === 'passage') {
+        examArea.appendChild(el('div', 'card passage-box', block.html));
+      } else if (block.type === 'mc') {
+        const card = el('div', 'card');
+        card.id = 'q_' + part.id + '_' + block.num;
+        let inner = '<div class="q-text"><span class="q-num">' + block.num + '</span>' + block.text + (block.auto ? '' : ' <span class="manual-tag">GV chấm</span>') + '</div>';
+        inner += '<div class="options-grid">';
+        block.options.forEach((opt, idx) => {
+          const letter = String.fromCharCode(65 + idx);
+          inner += '<label class="option-label"><input type="radio" name="mc_' + part.id + '_' + block.num + '" value="' + idx + '"> ' + letter + '. ' + opt.replace(/"/g, '&quot;') + '</label>';
+        });
+        inner += '</div>';
+        card.innerHTML = inner;
+        examArea.appendChild(card);
+        registry.push({ id: part.id + '_' + block.num, kind: 'mc', auto: block.auto, num: block.num, partId: part.id, bonus: !!part.bonus || !!block.optional, answer: block.answer, options: block.options, text: block.text });
+      } else if (block.type === 'text') {
+        const card = el('div', 'card');
+        card.id = 'q_' + part.id + '_' + block.num;
+        let inner = '<div class="q-text"><span class="q-num">' + block.num + '</span>' + block.text + (block.auto ? '' : ' <span class="manual-tag">GV chấm</span>') + '</div>';
+        inner += '<input type="text" class="text-input" id="ans_' + part.id + '_' + block.num + '" placeholder="Nhập câu trả lời" autocomplete="off">';
+        card.innerHTML = inner;
+        examArea.appendChild(card);
+        registry.push({ id: part.id + '_' + block.num, kind: 'text', auto: block.auto, num: block.num, partId: part.id, bonus: !!part.bonus || !!block.optional, alt: !!block.optional, answers: block.answers, ref: block.ref, text: block.text });
+      } else if (block.type === 'clozePassage') {
+        const card = el('div', 'card passage-box');
+        card.innerHTML = renderClozeHtml(block.html, block.blanks, block.letterOnly);
+        examArea.appendChild(card);
+        block.blanks.forEach(b => {
+          registry.push({
+            id: part.id + '_' + b.num, kind: b.kind === 'mc' ? 'clozeMc' : 'clozeText', auto: b.auto,
+            num: b.num, partId: part.id, bonus: !!part.bonus, answers: b.answers, answer: b.answer, options: b.options
+          });
+        });
+      } else if (block.type === 'essay') {
+        const card = el('div', 'card');
+        card.id = 'q_' + part.id + '_' + block.num;
+        let inner = '<div class="q-text"><span class="q-num">' + block.title + '</span> <span class="manual-tag">GV chấm</span></div>';
+        inner += '<div style="margin-top:8px;">' + block.prompt + '</div>';
+        inner += '<textarea class="essay-area" id="ans_' + part.id + '_' + block.num + '" placeholder="Viết bài luận của bạn ở đây..."></textarea>';
+        inner += '<div class="essay-meta" id="wordCount_' + part.id + '_' + block.num + '">0 từ</div>';
+        card.innerHTML = inner;
+        examArea.appendChild(card);
+        registry.push({ id: part.id + '_' + block.num, kind: 'essay', auto: false, num: block.num, partId: part.id, bonus: !!part.bonus || !!block.optional, alt: !!block.optional, minWords: block.minWords, maxWords: block.maxWords });
+      }
+    });
+  });
+}
+
+function getAnswerValue(item) {
+  if (item.kind === 'mc') {
+    const checked = document.querySelector('input[name="mc_' + item.partId + '_' + item.num + '"]:checked');
+    return checked ? parseInt(checked.value, 10) : null;
+  } else if (item.kind === 'text') {
+    const elx = document.getElementById('ans_' + item.partId + '_' + item.num);
+    return elx ? elx.value : '';
+  } else if (item.kind === 'clozeText') {
+    const elx = document.getElementById('ans_' + item.num);
+    return elx ? elx.value : '';
+  } else if (item.kind === 'clozeMc') {
+    const elx = document.getElementById('ans_' + item.num);
+    return elx && elx.value !== '' ? parseInt(elx.value, 10) : null;
+  } else if (item.kind === 'essay') {
+    const elx = document.getElementById('ans_' + item.partId + '_' + item.num);
+    return elx ? elx.value : '';
+  }
+  return '';
+}
+
+function isAnswered(item) {
+  const v = getAnswerValue(item);
+  if (item.kind === 'mc' || item.kind === 'clozeMc') return v !== null && v !== undefined;
+  return v && v.trim && v.trim() !== '';
+}
+
+function isCorrect(item) {
+  if (item.kind === 'mc' || item.kind === 'clozeMc') {
+    const v = getAnswerValue(item);
+    return v !== null && v === item.answer;
+  }
+  if (item.kind === 'text' || item.kind === 'clozeText') {
+    const v = normalize(getAnswerValue(item));
+    return (item.answers || []).some(a => normalize(a) === v);
+  }
+  return false;
+}
+
+function updateProgress() {
+  const main = registry.filter(i => !i.bonus), bon = registry.filter(i => i.bonus);
+  const a = main.filter(isAnswered).length, b = bon.filter(isAnswered).length;
+  const pct = main.length ? Math.round((a / main.length) * 100) : 0;
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = a + ' / ' + main.length + ' câu đã trả lời (' + pct + '%)' + (bon.length ? ' · Phần tự chọn (D.III hoặc D.III.A): ' + b + ' / ' + bon.length : '');
+  updateEssayWordCounts();
+}
+
+function updateEssayWordCounts() {
+  registry.filter(i => i.kind === 'essay').forEach(item => {
+    const elx = document.getElementById('ans_' + item.partId + '_' + item.num);
+    const label = document.getElementById('wordCount_' + item.partId + '_' + item.num);
+    if (!elx || !label) return;
+    const words = elx.value.trim() === '' ? 0 : elx.value.trim().split(/\s+/).length;
+    label.textContent = words + ' từ' + (item.minWords ? ' (yêu cầu ' + item.minWords + '-' + item.maxWords + ' từ)' : '');
+    label.classList.toggle('over-under', !!item.minWords && words > 0 && (words < item.minWords || words > item.maxWords));
+  });
+}
+
+examArea.addEventListener('change', () => { updateProgress(); saveState(); });
+examArea.addEventListener('input', () => { updateProgress(); saveState(); });
+document.getElementById('studentName').addEventListener('input', saveState);
+document.getElementById('studentName').addEventListener('input', () => document.querySelector('.name-box').classList.remove('error'));
+document.getElementById('studentName').addEventListener('change', saveState);
+
+// ---------- Audio player (max plays) ----------
+let audioPlays = {};
+const audioPlayers = [];
+
+function fmtAudioTime(s) {
+  if (!isFinite(s) || s < 0) s = 0;
+  return Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+}
+
+function buildAudioPlayer(block) {
+  const max = block.maxPlays || 2;
+  const card = el('div', 'card audio-card');
+  card.innerHTML =
+    '<div class="audio-title">🎧 ' + block.title + '</div>' +
+    '<div class="audio-row"><button type="button" class="audio-btn"></button>' +
+    '<div class="audio-progress"><div class="audio-progress-fill"></div></div>' +
+    '<span class="audio-time">0:00</span></div>' +
+    '<div class="audio-plays"></div>';
+  const btn = card.querySelector('.audio-btn');
+  const fill = card.querySelector('.audio-progress-fill');
+  const timeEl = card.querySelector('.audio-time');
+  const playsEl = card.querySelector('.audio-plays');
+
+  const audio = new Audio();
+  audio.preload = 'auto';
+  audio.src = block.src;
+
+  const player = { id: block.id, audio: audio, state: 'idle', refresh: null };
+  const used = () => audioPlays[block.id] || 0;
+  let lastTime = 0;
+
+  player.refresh = function () {
+    const left = Math.max(0, max - used());
+    playsEl.textContent = 'Lượt nghe còn lại: ' + left + ' / ' + max;
+    playsEl.classList.toggle('empty', left === 0);
+    if (examLocked) { btn.disabled = true; btn.textContent = 'Đã nộp bài'; return; }
+    if (player.state === 'playing') { btn.disabled = false; btn.textContent = '⏸ Tạm dừng'; }
+    else if (player.state === 'paused') { btn.disabled = false; btn.textContent = '▶ Tiếp tục nghe'; }
+    else if (left === 0) { btn.disabled = true; btn.textContent = 'Đã hết lượt nghe'; }
+    else { btn.disabled = false; btn.textContent = used() === 0 ? '▶ Bấm để nghe' : '▶ Nghe lần ' + (used() + 1); }
+  };
+
+  btn.addEventListener('click', () => {
+    if (examLocked) return;
+    if (player.state === 'playing') { audio.pause(); return; }
+    if (player.state === 'paused') { audio.play().catch(() => {}); return; }   // nghe tiếp sau khi tạm dừng, không trừ lượt
+    if (used() >= max) return;
+    btn.disabled = true;
+    lastTime = 0;
+    audio.currentTime = 0;
+    const p = audio.play();
+    const started = () => {
+      audioPlays[block.id] = used() + 1;   // trừ lượt khi bắt đầu nghe từ đầu
+      player.state = 'playing';
+      saveState();
+      player.refresh();
+    };
+    if (p && p.then) {
+      p.then(started).catch(() => {
+        player.state = 'idle';
+        player.refresh();
+        playsEl.textContent = 'Không phát được audio. Kiểm tra mạng rồi thử lại (lượt nghe chưa bị trừ).';
+      });
+    } else { started(); }
+  });
+
+  // chặn tua: mọi lần nhảy vị trí đều bị đưa về điểm đang nghe
+  audio.addEventListener('seeking', () => {
+    if (Math.abs(audio.currentTime - lastTime) > 1) audio.currentTime = lastTime;
+  });
+  audio.addEventListener('ratechange', () => { if (audio.playbackRate !== 1) audio.playbackRate = 1; });
+  audio.addEventListener('timeupdate', () => {
+    if (!audio.seeking) lastTime = audio.currentTime;
+    const d = audio.duration;
+    fill.style.width = (d && isFinite(d)) ? Math.min(100, (audio.currentTime / d) * 100) + '%' : '0%';
+    timeEl.textContent = fmtAudioTime(audio.currentTime) + (d && isFinite(d) ? ' / ' + fmtAudioTime(d) : '');
+  });
+  audio.addEventListener('pause', () => {
+    if (player.state === 'playing' && !audio.ended && !examLocked) { player.state = 'paused'; player.refresh(); }
+  });
+  audio.addEventListener('play', () => {
+    if (player.state === 'paused') { player.state = 'playing'; player.refresh(); }
+  });
+  audio.addEventListener('ended', () => {
+    player.state = 'idle';
+    lastTime = 0;
+    fill.style.width = '0%';
+    timeEl.textContent = '0:00';
+    player.refresh();
+  });
+
+  audioPlayers.push(player);
+  player.refresh();
+  return card;
+}
+
+function disableAudio() {
+  audioPlayers.forEach(p => { p.audio.pause(); p.state = 'idle'; p.refresh(); });
+}
+
+// ---------- Submit / grading ----------
+let examLocked = false;
+let emailSent = false;
+let sending = false;
+const SENT_MSG = 'Bài làm đã được nộp và gửi đến giáo viên. Em không cần làm thêm bước nào nữa nha.';
+
+function lockAllInputs() {
+  examArea.querySelectorAll('input, select, textarea').forEach(i => i.disabled = true);
+}
+
+function gradeExam() {
+  let autoScore = 0, autoTotal = 0, bonusScore = 0, bonusTotal = 0;
+  registry.forEach(item => {
+    if (!item.auto) return;
+    if (!['mc', 'clozeMc', 'text', 'clozeText'].includes(item.kind)) return;
+    const correct = isCorrect(item);
+    if (item.bonus) { bonusTotal++; if (correct) bonusScore++; }
+    else { autoTotal++; if (correct) autoScore++; }
+  });
+  return { autoScore, autoTotal, bonusScore, bonusTotal };
+}
+
+function getUnansweredList() {
+  const list = [];
+  registry.forEach(item => { if (!item.bonus && !isAnswered(item)) list.push(item); });
+  const alts = registry.filter(i => i.alt);
+  if (alts.length && !alts.some(isAnswered)) list.push({ partId: 'D', num: 'D.III hoặc D.III.A' });
+  return list;
+}
+
+function doSubmit(skipSend) {
+  if (finalElapsed === null) { finalElapsed = getElapsedSeconds(); submittedAt = Date.now(); }
+  secondsLeft = Math.max(0, TOTAL_SECONDS - finalElapsed);
+  updateTimerDisplay();
+  examLocked = true;
+  lockAllInputs();
+  disableAudio();
+  document.body.classList.remove('exam-active');
+
+  const scoreBox = document.getElementById('scoreBox');
+  scoreBox.style.display = 'block';
+  scoreBox.innerHTML = '<p><strong>Em đã nộp bài.</strong></p><p>Thời gian hoàn thành bài: <strong>' + formatElapsedText(getElapsedSeconds()) + '</strong></p><p id="doneNote">Đang gửi bài cho giáo viên...</p>';
+  if (scoreBox.scrollIntoView) scoreBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+  document.getElementById('submitBtn').disabled = true;
+  stopTimer();
+  saveState();
+
+  if (skipSend) {
+    if (!emailSent) showEmailStatus('Bài đã nộp nhưng chưa gửi được cho giáo viên. Bấm "Gửi lại bài cho giáo viên".', '#a8402d', true);
+    else showEmailStatus(SENT_MSG, '#1c6e4a', false);
+  } else {
+    sendResultEmail();
+  }
+}
+
+document.getElementById('submitBtn').addEventListener('click', () => {
+  const nameEl = document.getElementById('studentName');
+  if (nameEl.value.trim() === '') {
+    const box = nameEl.closest('.name-box');
+    box.classList.add('error');
+    box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    nameEl.focus();
+    alert('Em nhớ nhập họ và tên trước khi nộp bài nha.');
+    return;
+  }
+  const unanswered = getUnansweredList();
+  if (unanswered.length > 0) {
+    const listBox = document.getElementById('unansweredList');
+    listBox.innerHTML = unanswered.map(i => 'Phần ' + i.partId + ' - Câu ' + i.num).join('<br>');
+    document.getElementById('confirmText').textContent = 'Bạn còn ' + unanswered.length + ' câu chưa trả lời:';
+    document.getElementById('confirmOverlay').style.display = 'flex';
+  } else {
+    doSubmit();
+  }
+});
+document.getElementById('backToExam').addEventListener('click', () => {
+  document.getElementById('confirmOverlay').style.display = 'none';
+});
+document.getElementById('confirmSubmitAnyway').addEventListener('click', () => {
+  document.getElementById('confirmOverlay').style.display = 'none';
+  doSubmit();
+});
+
+// ---------- Email (tự động gửi khi nộp bài) ----------
+function showEmailStatus(msg, color, showRetry) {
+  const status = document.getElementById('emailStatus');
+  status.style.display = 'block';
+  status.style.color = color;
+  status.textContent = msg;
+  const note = document.getElementById('doneNote');
+  if (note) note.textContent = msg;
+  document.getElementById('retryBtn').style.display = showRetry ? 'inline-block' : 'none';
+  document.getElementById('downloadBtn').style.display = showRetry ? 'inline-block' : 'none';
+  document.getElementById('retryBtn').disabled = false;
+}
+
+function postResult(payload, attempt) {
+  return fetch("https://api.web3forms.com/submit", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+    body: JSON.stringify(payload)
+  })
+  .then(res => res.json().then(data => ({ ok: res.ok, data: data })))
+  .then(r => {
+    if (!r.ok || !r.data || r.data.success !== true) throw new Error('send failed');
+  })
+  .catch(err => {
+    if (attempt >= 3) throw err;
+    return new Promise(resolve => setTimeout(resolve, 1500 * attempt)).then(() => postResult(payload, attempt + 1));
+  });
+}
+
+function sendResultEmail() {
+  if (sending) return;
+  const name = document.getElementById('studentName').value.trim() || "Học sinh chưa ghi tên";
+  const { autoScore, autoTotal, bonusScore, bonusTotal } = gradeExam();
+
+  let lines = [];
+  lines.push("Học sinh: " + name);
+  lines.push("Đề: ADVANCED ENGLISH PROFICIENCY TEST - Kiểm tra cuối tháng 10 (Anh Chuyên 1)");
+  lines.push("Điểm tự động chấm (các câu có đáp án cố định): " + autoScore + " / " + autoTotal);
+  lines.push("D.III.A (phần tự chọn, thay cho bài essay D.III): " + bonusScore + " / " + bonusTotal);
+  const elapsedSec = getElapsedSeconds();
+  const elapsedText = formatElapsedText(elapsedSec) + " (đồng hồ trên màn hình: " + formatTime(elapsedSec) + ", tối đa " + EXAM_MINUTES + " phút)";
+  lines.push("Thời gian hoàn thành bài: " + elapsedText);
+  lines.push("Nộp lúc: " + new Date(submittedAt || Date.now()).toLocaleString('vi-VN', { hour12: false }));
+  lines.push("Số lần rời khỏi trang khi làm bài: " + tabSwitchCount);
+  audioPlayers.forEach(p => {
+    lines.push("Lượt nghe " + p.id + ": " + (audioPlays[p.id] || 0) + " lần");
+  });
+  lines.push("");
+
+  examData.parts.forEach(part => {
+    if (part.pending) return;
+    lines.push("=== PHẦN " + part.id + " ===");
+    registry.filter(i => i.partId === part.id).forEach(item => {
+      const v = getAnswerValue(item);
+      if (item.kind === 'essay') {
+        lines.push('Bài essay D.III (GV chấm):');
+        lines.push((v && v.trim() !== '') ? v.trim() : '(không trả lời)');
+        return;
+      }
+      let display = '';
+      if (item.kind === 'mc' || item.kind === 'clozeMc') {
+        display = (v !== null && v !== undefined) ? String.fromCharCode(65 + v) + (item.kind === 'mc' ? '. ' + stripTags(item.options[v]) : '') : '(không trả lời)';
+      } else {
+        display = (v && v.trim() !== '') ? v : '(không trả lời)';
+      }
+      let tag = '';
+      if (item.auto) {
+        if (isCorrect(item)) tag = ' [đúng]';
+        else tag = (item.kind === 'text' || item.kind === 'clozeText') ? ' [sai, GV xem lại]' : ' [sai]';
+      } else tag = ' [GV chấm]' + (item.ref ? ' | Đáp án tham khảo: ' + item.ref : '');
+      lines.push('Câu ' + item.num + (item.alt ? ' (D.III.A)' : '') + ': ' + display + tag);
+    });
+    lines.push('');
+  });
+
+  let reflectionBlock = null;
+  examData.parts.forEach(part => {
+    (part.blocks || []).forEach(b => { if (b.type === 'reflection') reflectionBlock = b; });
+  });
+  if (reflectionBlock) {
+    lines.push("=== PHẢN HỒI HỌC TẬP THÁNG 10 ===");
+    const checked = document.querySelector('input[name="reflectionRating"]:checked');
+    const ratingText = checked ? reflectionBlock.scale[parseInt(checked.value, 10)].label : '(chưa đánh giá)';
+    const commentEl = document.getElementById('reflectionComment');
+    const comment = commentEl && commentEl.value.trim() !== '' ? commentEl.value.trim() : '(không có)';
+    lines.push('Mức độ hài lòng: ' + ratingText);
+    lines.push('Chia sẻ thêm: ' + comment);
+    lines.push('');
+  }
+
+  lastResultText = lines.join("\n");
+  document.getElementById('retryBtn').style.display = 'none';
+
+  if (!WEB3FORMS_KEY || WEB3FORMS_KEY === "DAN_ACCESS_KEY_VAO_DAY") {
+    showEmailStatus('Bài đã nộp nhưng chưa gửi được cho giáo viên. Các em bấm "Tải bài làm về máy" và gửi file cho giáo viên nhé.', '#a8402d', true);
+    return;
+  }
+
+  sending = true;
+  showEmailStatus('Đang gửi bài cho giáo viên...', '#4b5b54', false);
+  postResult({
+    access_key: WEB3FORMS_KEY,
+    subject: "Kết quả bài kiểm tra tháng 10 - " + name + " - làm trong " + formatElapsedText(elapsedSec),
+    from_name: name,
+    name: name,
+    score: autoScore + " / " + autoTotal + " (D.III.A tự chọn: " + bonusScore + " / " + bonusTotal + ")",
+    time_spent: elapsedText,
+    tab_switches: String(tabSwitchCount),
+    answers: lastResultText
+  }, 1)
+  .then(() => {
+    sending = false;
+    emailSent = true;
+    saveState();
+    showEmailStatus(SENT_MSG, '#1c6e4a', false);
+  })
+  .catch(() => {
+    sending = false;
+    showEmailStatus('Bài đã nộp nhưng gửi email thất bại. Kiểm tra mạng rồi bấm "Gửi lại bài cho giáo viên", hoặc tải bài làm về máy và gửi cho giáo viên.', '#a8402d', true);
+  });
+}
+function downloadResult() {
+  const nm = (document.getElementById('studentName').value.trim() || 'hoc-sinh').replace(/[^\w\-]+/g, '_');
+  const blob = new Blob([lastResultText || 'Chưa có dữ liệu bài làm.'], { type: 'text/plain;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'bai-lam-thang-10-' + nm + '.txt';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+document.getElementById('downloadBtn').addEventListener('click', () => {
+  if (!lastResultText) sendResultEmail();
+  downloadResult();
+});
+document.getElementById('retryBtn').addEventListener('click', sendResultEmail);
+
+// ---------- Timer ----------
+let secondsLeft = TOTAL_SECONDS;
+let startedAt = null;
+let finalElapsed = null;
+let submittedAt = null;
+let timerInterval = null;
+function formatTime(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return String(m).padStart(2, '0') + ':' + String(sec).padStart(2, '0');
+}
+function getElapsedSeconds() {
+  if (finalElapsed !== null) return finalElapsed;
+  if (startedAt === null) return 0;
+  return Math.max(0, Math.min(TOTAL_SECONDS, Math.floor((Date.now() - startedAt) / 1000)));
+}
+function formatElapsedText(s) {
+  const m = Math.floor(s / 60);
+  const sec = s % 60;
+  return m + ' phút ' + String(sec).padStart(2, '0') + ' giây';
+}
+function updateTimerDisplay() {
+  const chip = document.getElementById('timerChip');
+  chip.textContent = formatTime(Math.max(secondsLeft, 0));
+  chip.classList.toggle('low', secondsLeft <= 300);
+  const elapsedChip = document.getElementById('elapsedChip');
+  if (elapsedChip) elapsedChip.textContent = 'Đã làm: ' + formatTime(getElapsedSeconds());
+}
+function tickTimer() {
+  secondsLeft = Math.max(0, TOTAL_SECONDS - getElapsedSeconds());
+  updateTimerDisplay();
+  saveState();
+  if (secondsLeft <= 0) {
+    stopTimer();
+    if (!examLocked) {
+      doSubmit();
+      alert('Đã hết ' + EXAM_MINUTES + ' phút làm bài. Bài làm đã được tự động nộp và gửi cho giáo viên.');
+    }
+  }
+}
+function startTimer() { timerInterval = setInterval(tickTimer, 1000); tickTimer(); }
+function stopTimer() { if (timerInterval) clearInterval(timerInterval); }
+
+// ---------- Tab switch / exit counter ----------
+let tabSwitchCount = 0;
+function registerSwitch() {
+  if (examLocked) return;
+  tabSwitchCount++;
+  document.getElementById('switchChip').textContent = 'Rời khỏi trang: ' + tabSwitchCount + ' lần';
+  saveState();
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden) registerSwitch(); });
+window.addEventListener('blur', registerSwitch);
+
+// ---------- Local persistence (autosave / resume) ----------
+const STORAGE_KEY = 'examState_ancChuyen2K1314_ktCuoiThang10_v3';
+
+function saveState() {
+  try {
+    const answers = {};
+    registry.forEach(item => { answers[item.id] = getAnswerValue(item); });
+    const reflectionChecked = document.querySelector('input[name="reflectionRating"]:checked');
+    const commentEl = document.getElementById('reflectionComment');
+    const nameEl = document.getElementById('studentName');
+    const state = {
+      studentName: nameEl ? nameEl.value : '',
+      answers: answers,
+      reflectionRating: reflectionChecked ? reflectionChecked.value : null,
+      reflectionComment: commentEl ? commentEl.value : '',
+      tabSwitchCount: tabSwitchCount,
+      startedAt: startedAt,
+      finalElapsed: finalElapsed,
+      submittedAt: submittedAt,
+      examLocked: examLocked,
+      emailSent: emailSent,
+      audioPlays: audioPlays,
+      savedAt: Date.now()
+    };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) { /* localStorage không khả dụng - bỏ qua autosave */ }
+}
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+
+function restoreState() {
+  const state = loadState();
+  if (!state) return;
+
+  const nameEl = document.getElementById('studentName');
+  if (nameEl && state.studentName) nameEl.value = state.studentName;
+
+  registry.forEach(item => {
+    const v = state.answers ? state.answers[item.id] : undefined;
+    if (v === null || v === undefined || v === '') return;
+    if (item.kind === 'mc') {
+      const inputEl = document.querySelector('input[name="mc_' + item.partId + '_' + item.num + '"][value="' + v + '"]');
+      if (inputEl) inputEl.checked = true;
+    } else if (item.kind === 'clozeMc' || item.kind === 'clozeText') {
+      const elx = document.getElementById('ans_' + item.num);
+      if (elx) elx.value = v;
+    } else {
+      const elx = document.getElementById('ans_' + item.partId + '_' + item.num);
+      if (elx) elx.value = v;
+    }
+  });
+
+  if (state.reflectionRating !== null && state.reflectionRating !== undefined) {
+    const radio = document.querySelector('input[name="reflectionRating"][value="' + state.reflectionRating + '"]');
+    if (radio) {
+      radio.checked = true;
+      const label = radio.closest('.reflection-option');
+      if (label) label.classList.add('selected');
+    }
+  }
+  const commentEl = document.getElementById('reflectionComment');
+  if (commentEl && state.reflectionComment) commentEl.value = state.reflectionComment;
+
+  if (typeof state.tabSwitchCount === 'number') {
+    tabSwitchCount = state.tabSwitchCount;
+    document.getElementById('switchChip').textContent = 'Rời khỏi trang: ' + tabSwitchCount + ' lần';
+  }
+  if (typeof state.startedAt === 'number') startedAt = state.startedAt;
+  if (typeof state.finalElapsed === 'number') { finalElapsed = state.finalElapsed; submittedAt = state.submittedAt || null; }
+  updateTimerDisplay();
+
+  if (state.audioPlays && typeof state.audioPlays === 'object') {
+    audioPlays = state.audioPlays;
+    audioPlayers.forEach(p => p.refresh());
+  }
+  emailSent = !!state.emailSent;
+
+  if (state.examLocked) {
+    doSubmit(true);
+  }
+}
+
+window.addEventListener('beforeunload', saveState);
+
+// ---------- Anti-copy deterrents ----------
+let toastTimeout = null;
+function showCopyToast() {
+  const toast = document.getElementById('copyToast');
+  toast.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+document.addEventListener('contextmenu', (e) => { e.preventDefault(); showCopyToast(); });
+document.addEventListener('copy', (e) => { e.preventDefault(); showCopyToast(); });
+document.addEventListener('cut', (e) => { e.preventDefault(); showCopyToast(); });
+document.addEventListener('selectstart', (e) => {
+  const tag = e.target.tagName;
+  if (tag !== 'INPUT' && tag !== 'TEXTAREA') e.preventDefault();
+});
+document.addEventListener('keydown', (e) => {
+  const key = e.key ? e.key.toLowerCase() : '';
+  const blockedCombo = (e.ctrlKey || e.metaKey) && ['c', 'u', 's', 'x'].includes(key);
+  const devTools = key === 'f12' || ((e.ctrlKey || e.metaKey) && e.shiftKey && ['i', 'j', 'c'].includes(key));
+  if (blockedCombo || devTools) {
+    e.preventDefault();
+    showCopyToast();
+  }
+});
+
+// ---------- Init ----------
+buildNavLinks();
+renderExam();
+restoreState();
+if (startedAt === null) startedAt = Date.now();
+saveState();
+updateProgress();
+if (!examLocked) {
+  document.body.classList.add('exam-active');
+  startTimer();
+}
+
+</script>
+</body>
+</html>
